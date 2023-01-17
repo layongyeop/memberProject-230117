@@ -8,13 +8,10 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<%
+<%
 		request.setCharacterEncoding("utf-8");
 		
-		String userID = request.getParameter("userID");
-		String userPW = request.getParameter("userPW");
-		String userMAIL = request.getParameter("userMAIL");
-
+		String idCheck = request.getParameter("idCheck");
 		
 		String driverName = "com.mysql.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/webdb";
@@ -22,9 +19,9 @@
 		String password = "1234";
 		
 		//String sql="INSERT INTO join_member(id, passwd, email) VALUES('"+userID+"','"+userPW+"','"+userMAIL+"')";
-		String sql = "INSERT INTO join_member(id, passwd, email) VALUES(?,?,?)";
-	
-		
+		//String sql = "INSERT INTO join_member(id, passwd, email) VALUES(?,?,?)";
+		//String sql = "SELECT * FROM join_member WHERE id = '"+idCheck+"'";
+		String sql = "SELECT * FROM join_member WHERE id = ?";
 		Connection conn = null;//DB 연결 선언
 		
 		try {
@@ -33,41 +30,41 @@
 			conn = DriverManager.getConnection(url, username, password);//DB 연동
 			
 			//Statement stmt = conn.createStatement();
+			
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, userID);
-			pstmt.setString(2, userPW);
-			pstmt.setString(3, userMAIL);
+			pstmt.setString(1, idCheck);
+			ResultSet rs = pstmt.executeQuery();
 			
-			int dbCheck = pstmt.executeUpdate();
 			
-			if(dbCheck ==1 ){
-				response.sendRedirect("signupSuccess.jsp");
-				
+			
+			if(rs.next()){
+				out.println("중복된 아이디입니다");
 			}
-			else {
-				response.sendRedirect("signup.jsp");
+			else{
+				out.println("회원가입 가능한 아이디입니다");
 			}
-
-			pstmt.close();
-	
+			
+			if(rs != null){
+				rs.close();
+			}
+			if(pstmt != null){
+				pstmt.close();
+			}
+			if(conn != null) {
+				conn.close();
+			}
 
 			//System.out.println(conn);	
 		} 
 		catch(Exception e) {
 			e.printStackTrace();
 		} 
-		finally {
-			try {
-				
-				if(conn != null) {
-					conn.close();
-				}
-			} 
-			catch(Exception e) {
-				e.printStackTrace();
-			}
-		}
+		
 	%>
-
+	<br><hr>
+	<form action="signup.jsp">
+		<input type="submit" value="뒤로가기">
+	</form>
+	
 </body>
 </html>

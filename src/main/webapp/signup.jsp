@@ -42,6 +42,12 @@
 	</script>
 </head>
 <body>
+	<hr>
+	<form action="idCheck.jsp">
+		아이디 중복체크 : <input type="text" name="idCheck">
+		<input type="submit" value="중복체크">
+	</form>
+	<hr>
 	<form action="insertDB.jsp" method="post" name="user_info">
 	
 		아이디 : <br>
