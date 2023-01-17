@@ -24,6 +24,11 @@
 						<input type="submit" value="회원 탈퇴하기">
 					</form>
 				</td>
+				<td>
+					<form action="modify.jsp">
+						<input type="submit" value="회원 정보수정">
+					</form>
+				</td>
 			</tr>
 		</table>
 
